@@ -1,0 +1,18 @@
+[
+  {
+    "id": "0001",
+    "name": "Mezanur Rahman",
+    "imageUrl": "/src/assets/images/mezanur_rahman.png",
+    "position": "All Rounder",
+    "handUsed": "RH",
+    "weight": 4
+  },
+  {
+    "id": "0002",
+    "name": "Elias Shekh",
+    "imageUrl": "/src/assets/images/mezanur_rahman.png",
+    "position": "All Rounder",
+    "handUsed": "RH",
+    "weight": 5
+  }
+]
