@@ -4,13 +4,14 @@ import { TPlayer } from "../../types/Players";
 
 type TPlayerProps = {
   player: TPlayer;
+  cardHeight?: string;
 };
 
-const PlayerCard = ({ player }: TPlayerProps) => {
+const PlayerCard = ({ player, cardHeight = "h-[400px]" }: TPlayerProps) => {
   const dispatch = useAppDispatch();
   return (
     <div
-      className="group relative block bg-black"
+      className={`group relative block bg-black cursor-pointer ${cardHeight}`}
       onClick={() => dispatch(addPlayer(player))}
     >
       <img
@@ -20,9 +21,9 @@ const PlayerCard = ({ player }: TPlayerProps) => {
       />
 
       <div className="relative p-4 sm:p-6 lg:p-8">
-        <div className="mt-32 sm:mt-48 lg:mt-64">
+        <div className="mt-32 sm:mt-48 lg:mt-72">
           <div className="translate-y-8 transform opacity-0 transition-all group-hover:translate-y-0 group-hover:opacity-100">
-            <p className="text-sm font-medium uppercase tracking-widest text-pink-500">
+            <p className="text-sm font-medium uppercase tracking-widest text-[#4D8DFF]">
               {player.position}
             </p>
 
