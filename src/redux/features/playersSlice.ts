@@ -8,18 +8,32 @@ type TInitialPlayer = {
 const initialState: TInitialPlayer = {
   players: [],
 };
-console.log("🚀 ~ initialState: TInitialPlayer.players:", initialState.players);
 
 const playersSlice = createSlice({
   name: "players",
   initialState,
   reducers: {
-    addPlayer: (state, actions: PayloadAction<TPlayer>) => {
-      state.players.push(actions.payload);
+    addPlayer: (state, action: PayloadAction<TPlayer>) => {
+      const isPlayerExist = state.players.some(
+        (player) => player.id === action.payload.id
+      );
+
+      if (isPlayerExist) {
+        state.players = state.players.filter(
+          (player) => player.id !== action.payload.id
+        );
+      } else {
+        state.players.push(action.payload);
+      }
+    },
+    removePlayer: (state, action: PayloadAction<string>) => {
+      state.players = state.players.filter(
+        (player) => player.id !== action.payload
+      );
     },
   },
 });
 
-export const { addPlayer } = playersSlice.actions;
+export const { addPlayer, removePlayer } = playersSlice.actions;
 
 export default playersSlice.reducer;

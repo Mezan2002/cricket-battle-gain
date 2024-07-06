@@ -83,16 +83,6 @@ body {
   transform: rotateY(180deg);
 }
 
-@keyframes rotation_481 {
-  0% {
-    transform: rotateZ(0deg);
-  }
-
-  0% {
-    transform: rotateZ(360deg);
-  }
-}
-
 .front {
   transform: rotateY(180deg);
   color: white;
@@ -109,7 +99,7 @@ body {
 }
 
 .front-content .badge {
-  background-color: #00000055;
+  background-color: #4d8dff;
   padding: 2px 10px;
   border-radius: 5px;
   backdrop-filter: blur(2px);
@@ -138,7 +128,6 @@ body {
 .card-footer {
   color: #ffffff88;
   margin-top: 5px;
-  font-size: 8px;
 }
 
 .front .img {
@@ -165,6 +154,16 @@ body {
   width: 30px;
   height: 30px;
   animation-delay: -1800ms;
+}
+
+@keyframes rotation_481 {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  0% {
+    transform: rotateZ(360deg);
+  }
 }
 
 @keyframes floating {

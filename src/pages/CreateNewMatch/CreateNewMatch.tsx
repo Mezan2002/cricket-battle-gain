@@ -1,62 +1,190 @@
 import { CheckCircle } from "lucide-react";
 import { useState } from "react";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
 import playersData from "../../../public/playersData.json";
 import PlayerCard from "../../components/PlayerCard/PlayerCard";
+import PlayersListCard from "../../components/PlayersListCard/PlayersListCard";
 import { Button } from "../../components/ui/button";
-import { useAppSelector } from "../../redux/hooks";
+import { TPlayer } from "../../types/Players";
 
 const CreateNewMatch = () => {
   const [stage, setStage] = useState("player_selection");
-  const { players } = useAppSelector((state) => state.players);
-  console.log("🚀 ~ CreateNewMatch ~ players:", players);
+  const [teamAlpha, setTeamAlpha] = useState<TPlayer[]>([]);
+  const [teamBeta, setTeamBeta] = useState<TPlayer[]>([]);
+  const [playerList, setPlayerList] = useState<TPlayer[]>(playersData); // Managing players locally
+  const [selectedPlayers, setSelectedPlayers] = useState<TPlayer[]>([]);
+
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      return;
+    }
+
+    const sourceClone = Array.from(
+      source.droppableId === "playerList"
+        ? playerList
+        : source.droppableId === "teamAlpha"
+        ? teamAlpha
+        : teamBeta
+    );
+    const destClone = Array.from(
+      destination.droppableId === "playerList"
+        ? playerList
+        : destination.droppableId === "teamAlpha"
+        ? teamAlpha
+        : teamBeta
+    );
+
+    const [removed] = sourceClone.splice(source.index, 1);
+    destClone.splice(destination.index, 0, removed);
+
+    if (source.droppableId === "playerList") {
+      setPlayerList(sourceClone);
+    } else if (source.droppableId === "teamAlpha") {
+      setTeamAlpha(sourceClone);
+    } else if (source.droppableId === "teamBeta") {
+      setTeamBeta(sourceClone);
+    }
+
+    if (destination.droppableId === "playerList") {
+      setPlayerList(destClone);
+    } else if (destination.droppableId === "teamAlpha") {
+      setTeamAlpha(destClone);
+    } else if (destination.droppableId === "teamBeta") {
+      setTeamBeta(destClone);
+    }
+  };
+
+  /* const togglePlayerSelection = (player: TPlayer) => {
+    if (selectedPlayers.includes(player)) {
+      setSelectedPlayers(selectedPlayers.filter((p) => p.id !== player.id));
+    } else {
+      setSelectedPlayers([...selectedPlayers, player]);
+    }
+  }; */
 
   return (
     <section className="text-white">
       <div className="p-10">
         {stage === "creating_new_match" ? (
           <>
-            {" "}
             <h1 className="text-3xl font-semibold mb-5">Create a new match</h1>
-            <div className="grid grid-cols-3 gap-5">
-              <div className="">
-                <h6 className="font-bold text-lg">Player List</h6>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <div className="grid grid-cols-3 gap-5">
                 <div>
-                  <div className="space-y-3">
-                    {players.map((player) => (
-                      <div className="group before:hover:scale-95 before:hover:h-72 before:hover:w-80 before:hover:h-44 before:hover:rounded-b-2xl before:transition-all before:duration-500 before:content-[''] before:w-80 before:h-24 before:rounded-t-2xl before:bg-gradient-to-bl from-sky-200 via-orange-200 to-orange-700 before:absolute before:top-0 w-80 h-72 relative bg-gray-700 flex flex-col items-center justify-center gap-2 text-center rounded-2xl overflow-hidden">
-                        <div className="w-28 h-28 bg-blue-700 mt-8 rounded-full border-4 border-slate-50 z-10 group-hover:scale-150 group-hover:-translate-x-24  group-hover:-translate-y-20 transition-all duration-500 overflow-hidden ">
-                          <img src={player.imageUrl} alt="" />
-                        </div>
-                        <div className="z-10 group-hover:-translate-y-5 transition-all duration-500">
-                          <span className="text-2xl font-semibold text-black">
-                            {player.name}
-                          </span>
-                          <p className="text-black">{player.position}</p>
-                        </div>
+                  <h6 className="font-bold text-lg mb-4">Player List</h6>
+                  <Droppable droppableId="playerList">
+                    {(provided) => (
+                      <div
+                        className="space-y-5"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        {playerList.map((player, index) => (
+                          <Draggable
+                            key={player.id}
+                            draggableId={player.id.toString()}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <PlayersListCard player={player} />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
                       </div>
-                    ))}
-                  </div>
+                    )}
+                  </Droppable>
                 </div>
+                <Droppable droppableId="teamAlpha">
+                  {(provided) => (
+                    <div
+                      className="space-x-5 space-y-5"
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                    >
+                      <h6 className="font-bold text-lg">Team Alpha</h6>
+                      {teamAlpha.map((player, index) => (
+                        <Draggable
+                          key={player.id}
+                          draggableId={player.id.toString()}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <PlayersListCard player={player} />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+                <Droppable droppableId="teamBeta">
+                  {(provided) => (
+                    <div
+                      className="space-x-5 space-y-5"
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                    >
+                      <h6 className="font-bold text-lg">Team Beta</h6>
+                      {teamBeta.map((player, index) => (
+                        <Draggable
+                          key={player.id}
+                          draggableId={player.id.toString()}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <PlayersListCard player={player} />
+                            </div>
+                          )}
+                        </Draggable>
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
               </div>
-              <div className="border-r">
-                <h6 className="font-bold text-lg">Team Alpha</h6>
-              </div>
-              <div className="border-r">
-                <h6 className="font-bold text-lg">Team Beta</h6>
-              </div>
-            </div>{" "}
+            </DragDropContext>
           </>
         ) : (
           <>
-            {" "}
             <div className="flex items-center justify-between mb-10">
               <h1 className="text-3xl font-semibold">Please select players:</h1>
-              {players.length !== 0 && (
+              {playerList.length !== 0 && (
                 <Button
                   onClick={() => setStage("creating_new_match")}
                   className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
                 >
-                  {players.length <= 9 ? `0${players.length}` : players.length}{" "}
+                  {selectedPlayers.length <= 9
+                    ? `0${selectedPlayers.length}`
+                    : selectedPlayers.length}{" "}
                   Players selected
                   <CheckCircle className="ml-2" size={20} />
                 </Button>
