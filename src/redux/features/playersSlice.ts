@@ -26,14 +26,9 @@ const playersSlice = createSlice({
         state.players.push(action.payload);
       }
     },
-    removePlayer: (state, action: PayloadAction<string>) => {
-      state.players = state.players.filter(
-        (player) => player.id !== action.payload
-      );
-    },
   },
 });
 
-export const { addPlayer, removePlayer } = playersSlice.actions;
+export const { addPlayer } = playersSlice.actions;
 
 export default playersSlice.reducer;

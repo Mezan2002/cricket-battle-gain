@@ -16,7 +16,7 @@ const CreateNewMatch = () => {
   const [stage, setStage] = useState("player_selection");
   const [teamAlpha, setTeamAlpha] = useState<TPlayer[]>([]);
   const [teamBeta, setTeamBeta] = useState<TPlayer[]>([]);
-  const [playerList, setPlayerList] = useState<TPlayer[]>(playersData); // Managing players locally
+  const playerList = playersData;
   const [selectedPlayers, setSelectedPlayers] = useState<TPlayer[]>([]);
 
   const onDragEnd = (result: DropResult) => {
@@ -27,51 +27,75 @@ const CreateNewMatch = () => {
     }
 
     if (source.droppableId === destination.droppableId) {
-      return;
-    }
+      // Reordering within the same list
+      const items = Array.from(
+        source.droppableId === "playerList"
+          ? selectedPlayers
+          : source.droppableId === "teamAlpha"
+          ? teamAlpha
+          : teamBeta
+      );
+      const [moved] = items.splice(source.index, 1);
+      items.splice(destination.index, 0, moved);
 
-    const sourceClone = Array.from(
-      source.droppableId === "playerList"
-        ? playerList
-        : source.droppableId === "teamAlpha"
-        ? teamAlpha
-        : teamBeta
-    );
-    const destClone = Array.from(
-      destination.droppableId === "playerList"
-        ? playerList
-        : destination.droppableId === "teamAlpha"
-        ? teamAlpha
-        : teamBeta
-    );
+      if (source.droppableId === "playerList") {
+        setSelectedPlayers(items);
+      } else if (source.droppableId === "teamAlpha") {
+        setTeamAlpha(items);
+      } else if (source.droppableId === "teamBeta") {
+        setTeamBeta(items);
+      }
+    } else {
+      // Moving between different lists
+      const sourceClone = Array.from(
+        source.droppableId === "playerList"
+          ? selectedPlayers
+          : source.droppableId === "teamAlpha"
+          ? teamAlpha
+          : teamBeta
+      );
+      const destClone = Array.from(
+        destination.droppableId === "playerList"
+          ? selectedPlayers
+          : destination.droppableId === "teamAlpha"
+          ? teamAlpha
+          : teamBeta
+      );
 
-    const [removed] = sourceClone.splice(source.index, 1);
-    destClone.splice(destination.index, 0, removed);
+      const [removed] = sourceClone.splice(source.index, 1);
+      destClone.splice(destination.index, 0, removed);
 
-    if (source.droppableId === "playerList") {
-      setPlayerList(sourceClone);
-    } else if (source.droppableId === "teamAlpha") {
-      setTeamAlpha(sourceClone);
-    } else if (source.droppableId === "teamBeta") {
-      setTeamBeta(sourceClone);
-    }
+      if (source.droppableId === "playerList") {
+        setSelectedPlayers(sourceClone);
+      } else if (source.droppableId === "teamAlpha") {
+        setTeamAlpha(sourceClone);
+      } else if (source.droppableId === "teamBeta") {
+        setTeamBeta(sourceClone);
+      }
 
-    if (destination.droppableId === "playerList") {
-      setPlayerList(destClone);
-    } else if (destination.droppableId === "teamAlpha") {
-      setTeamAlpha(destClone);
-    } else if (destination.droppableId === "teamBeta") {
-      setTeamBeta(destClone);
+      if (destination.droppableId === "playerList") {
+        setSelectedPlayers(destClone);
+      } else if (destination.droppableId === "teamAlpha") {
+        setTeamAlpha(destClone);
+      } else if (destination.droppableId === "teamBeta") {
+        setTeamBeta(destClone);
+      }
     }
   };
 
-  /* const togglePlayerSelection = (player: TPlayer) => {
-    if (selectedPlayers.includes(player)) {
+  const togglePlayerSelection = (player: TPlayer) => {
+    if (selectedPlayers.some((p) => p.id === player.id)) {
       setSelectedPlayers(selectedPlayers.filter((p) => p.id !== player.id));
     } else {
       setSelectedPlayers([...selectedPlayers, player]);
     }
-  }; */
+  };
+
+  const handleRemovePlayer = (id: string) => {
+    setSelectedPlayers(selectedPlayers.filter((player) => player.id !== id));
+    setTeamAlpha(teamAlpha.filter((player) => player.id !== id));
+    setTeamBeta(teamBeta.filter((player) => player.id !== id));
+  };
 
   return (
     <section className="text-white">
@@ -90,7 +114,7 @@ const CreateNewMatch = () => {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >
-                        {playerList.map((player, index) => (
+                        {selectedPlayers.map((player, index) => (
                           <Draggable
                             key={player.id}
                             draggableId={player.id.toString()}
@@ -102,7 +126,10 @@ const CreateNewMatch = () => {
                                 {...provided.draggableProps}
                                 {...provided.dragHandleProps}
                               >
-                                <PlayersListCard player={player} />
+                                <PlayersListCard
+                                  player={player}
+                                  onRemove={handleRemovePlayer}
+                                />
                               </div>
                             )}
                           </Draggable>
@@ -132,7 +159,10 @@ const CreateNewMatch = () => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                             >
-                              <PlayersListCard player={player} />
+                              <PlayersListCard
+                                player={player}
+                                onRemove={handleRemovePlayer}
+                              />
                             </div>
                           )}
                         </Draggable>
@@ -161,7 +191,10 @@ const CreateNewMatch = () => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                             >
-                              <PlayersListCard player={player} />
+                              <PlayersListCard
+                                player={player}
+                                onRemove={handleRemovePlayer}
+                              />
                             </div>
                           )}
                         </Draggable>
@@ -177,7 +210,7 @@ const CreateNewMatch = () => {
           <>
             <div className="flex items-center justify-between mb-10">
               <h1 className="text-3xl font-semibold">Please select players:</h1>
-              {playerList.length !== 0 && (
+              {selectedPlayers.length !== 0 && (
                 <Button
                   onClick={() => setStage("creating_new_match")}
                   className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
@@ -191,8 +224,13 @@ const CreateNewMatch = () => {
               )}
             </div>
             <div className="grid grid-cols-5 gap-5">
-              {playersData.map((player) => (
-                <PlayerCard key={player.id} player={player} />
+              {playerList.map((player) => (
+                <div
+                  key={player.id}
+                  onClick={() => togglePlayerSelection(player)}
+                >
+                  <PlayerCard player={player} />
+                </div>
               ))}
             </div>
           </>
