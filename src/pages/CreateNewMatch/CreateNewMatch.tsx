@@ -1,4 +1,4 @@
-import { CheckCircle } from "lucide-react";
+import { ArrowRightCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import {
   DragDropContext,
@@ -102,7 +102,13 @@ const CreateNewMatch = () => {
       <div className="p-10">
         {stage === "creating_new_match" ? (
           <>
-            <h1 className="text-3xl font-semibold mb-5">Create a new match</h1>
+            <div className="mb-5 flex items-center justify-between">
+              <h1 className="text-3xl font-semibold">Create a new match</h1>
+              <Button className="bg-[#4D8DFF] duration-500 hover:bg-blue-600">
+                Goto Next
+                <ArrowRightCircle className="ml-2" size={20} />
+              </Button>
+            </div>
             <DragDropContext onDragEnd={onDragEnd}>
               <div className="grid grid-cols-3 gap-5">
                 <div>
