@@ -1,4 +1,4 @@
-import { ArrowRightCircle, CheckCircle } from "lucide-react";
+import { ArrowLeftCircle, ArrowRightCircle, CheckCircle } from "lucide-react";
 import { useState } from "react";
 import {
   DragDropContext,
@@ -97,6 +97,13 @@ const CreateNewMatch = () => {
     setTeamBeta(teamBeta.filter((player) => player.id !== id));
   };
 
+  const handleGoBack = () => {
+    setStage("player_selection");
+  };
+  const handleGotoNext = () => {
+    setStage("confirm_teams");
+  };
+
   return (
     <section className="text-white">
       <div className="p-10">
@@ -104,9 +111,28 @@ const CreateNewMatch = () => {
           <>
             <div className="mb-5 flex items-center justify-between">
               <h1 className="text-3xl font-semibold">Create a new match</h1>
-              <Button className="bg-[#4D8DFF] duration-500 hover:bg-blue-600">
-                Goto Next
-                <ArrowRightCircle className="ml-2" size={20} />
+              <Button
+                className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
+                onClick={() =>
+                  selectedPlayers.length ||
+                  teamAlpha.length ||
+                  teamBeta.length === 0
+                    ? handleGoBack()
+                    : handleGotoNext()
+                }
+              >
+                {selectedPlayers.length === 0 &&
+                teamAlpha.length === 0 &&
+                teamBeta.length === 0 ? (
+                  <p className="flex items-center">
+                    <ArrowLeftCircle className="mr-2" size={20} /> Goto Back
+                  </p>
+                ) : (
+                  <p className="flex items-center">
+                    Goto Next
+                    <ArrowRightCircle className="ml-2" size={20} />
+                  </p>
+                )}
               </Button>
             </div>
             <DragDropContext onDragEnd={onDragEnd}>
@@ -120,26 +146,32 @@ const CreateNewMatch = () => {
                         {...provided.droppableProps}
                         ref={provided.innerRef}
                       >
-                        {selectedPlayers.map((player, index) => (
-                          <Draggable
-                            key={player.id}
-                            draggableId={player.id.toString()}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                              >
-                                <PlayersListCard
-                                  player={player}
-                                  onRemove={handleRemovePlayer}
-                                />
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                        {selectedPlayers.length > 0 ? (
+                          selectedPlayers.map((player, index) => (
+                            <Draggable
+                              key={player.id}
+                              draggableId={player.id.toString()}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                >
+                                  <PlayersListCard
+                                    player={player}
+                                    onRemove={handleRemovePlayer}
+                                  />
+                                </div>
+                              )}
+                            </Draggable>
+                          ))
+                        ) : (
+                          <p className="text-lg font-medium">
+                            No data avaiable
+                          </p>
+                        )}
                         {provided.placeholder}
                       </div>
                     )}
