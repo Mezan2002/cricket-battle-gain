@@ -103,30 +103,69 @@ const CreateNewMatch = () => {
   };
 
   const handleGoBack = () => {
-    setStage("player_selection");
+    if (stage === "team_creation") {
+      setStage("player_selection");
+    } else if (stage === "confirm_teams") {
+      setStage("team_creation");
+    }
   };
+
   const handleGotoNext = () => {
-    setStage("confirm_teams");
+    if (stage === "player_selection") {
+      setStage("team_creation");
+    } else if (stage === "team_creation") {
+      setStage("confirm_teams");
+    }
   };
 
   return (
     <section className="text-white">
       <div className="p-10">
-        {stage === "creating_new_match" ? (
-          <p>
+        {stage === "player_selection" && (
+          <>
+            <div className="flex items-center justify-between mb-10">
+              <h1 className="text-3xl font-semibold">Please select players:</h1>
+              {selectedPlayers.length !== 0 && (
+                <Button
+                  onClick={handleGotoNext}
+                  className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
+                >
+                  {selectedPlayers.length <= 9
+                    ? `0${selectedPlayers.length}`
+                    : selectedPlayers.length}{" "}
+                  Players selected
+                  <CheckCircle className="ml-2" size={20} />
+                </Button>
+              )}
+            </div>
+            <div className="grid grid-cols-5 gap-5">
+              {playerList.map((player) => (
+                <div
+                  key={player.id}
+                  onClick={() => togglePlayerSelection(player)}
+                >
+                  <PlayerCard player={player} />
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {stage === "team_creation" && (
+          <div>
             <div className="mb-5 flex items-center justify-between">
               <h1 className="text-3xl font-semibold">Create a new match</h1>
               <Button
                 className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
-                onClick={() => (isNoData ? handleGoBack() : handleGotoNext())}
+                onClick={isNoData ? handleGoBack : handleGotoNext}
               >
                 {isNoData ? (
                   <p className="flex items-center">
-                    <ArrowLeftCircle className="mr-2" size={20} /> Goto Back
+                    <ArrowLeftCircle className="mr-2" size={20} /> Go Back
                   </p>
                 ) : (
                   <p className="flex items-center">
-                    Goto Next
+                    Go Next
                     <ArrowRightCircle className="ml-2" size={20} />
                   </p>
                 )}
@@ -134,7 +173,7 @@ const CreateNewMatch = () => {
             </div>
             {isNoData ? (
               <p className="flex items-center justify-center h-[60vh]">
-                No Data Founded!
+                No Data Found!
               </p>
             ) : (
               <DragDropContext onDragEnd={onDragEnd}>
@@ -240,35 +279,64 @@ const CreateNewMatch = () => {
                 </div>
               </DragDropContext>
             )}
-          </p>
-        ) : (
-          <>
-            <div className="flex items-center justify-between mb-10">
-              <h1 className="text-3xl font-semibold">Please select players:</h1>
-              {selectedPlayers.length !== 0 && (
-                <Button
-                  onClick={() => setStage("creating_new_match")}
-                  className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
-                >
-                  {selectedPlayers.length <= 9
-                    ? `0${selectedPlayers.length}`
-                    : selectedPlayers.length}{" "}
-                  Players selected
-                  <CheckCircle className="ml-2" size={20} />
-                </Button>
-              )}
+          </div>
+        )}
+
+        {stage === "confirm_teams" && (
+          <div>
+            <div className="mb-5 flex items-center justify-between">
+              <h1 className="text-3xl font-semibold">Confirm Teams</h1>
+              <Button
+                className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
+                onClick={handleGoBack}
+              >
+                <p className="flex items-center">
+                  <ArrowLeftCircle className="mr-2" size={20} /> Go Back
+                </p>
+              </Button>
             </div>
-            <div className="grid grid-cols-5 gap-5">
-              {playerList.map((player) => (
+            <div className="grid grid-cols-2 gap-5">
+              <div>
+                <h6 className="font-bold text-lg mb-4">Team Alpha</h6>
                 <div
-                  key={player.id}
-                  onClick={() => togglePlayerSelection(player)}
+                  className="border h-max min-h-[40rem] relative"
+                  style={{
+                    backgroundImage: "url('/images/BDCricket.png')",
+                    backgroundPosition: "right",
+                    opacity: "1",
+                  }}
                 >
-                  <PlayerCard player={player} />
+                  <div className="absolute w-full h-full bg-black opacity-50 z-20" />
+                  <div className="z-30 flex flex-row items-end">
+                    <img
+                      src="/images/captain.png"
+                      alt=""
+                      className="w-fit h-fit"
+                    />
+                    <p className="text-3xl font-medium absolute bottom-3 left-7 bg-black p-3 rounded-2xl bg-opacity-70">
+                      Mashrafi Bin Mortaza
+                    </p>
+                  </div>
+                  {/* {teamAlpha.map((player) => (
+                    <div key={player.id}>
+                      <PlayersListCard player={player} onRemove={() => {}} />
+                    </div>
+                  ))} */}
                 </div>
-              ))}
+              </div>
+              <div>
+                <h6 className="font-bold text-lg mb-4">Team Beta</h6>
+                {teamBeta.map((player) => (
+                  <div key={player.id}>
+                    <PlayersListCard player={player} onRemove={() => {}} />
+                  </div>
+                ))}
+              </div>
             </div>
-          </>
+            <Button className="mt-5 bg-[#4D8DFF] duration-500 hover:bg-blue-600">
+              Confirm Teams
+            </Button>
+          </div>
         )}
       </div>
     </section>
