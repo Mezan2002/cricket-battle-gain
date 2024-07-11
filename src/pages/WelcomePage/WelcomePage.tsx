@@ -13,7 +13,7 @@ const WelcomePage = () => {
             <Card className="bg-transparent">
               <CardContent className="p-5">
                 <img
-                  src="/src/assets/images/cricket.png"
+                  src="/images/cricket.png"
                   alt="cricket image"
                   className="w-11/12 mx-auto"
                 />
@@ -27,7 +27,7 @@ const WelcomePage = () => {
             <Card className="bg-transparent cursor-pointer">
               <CardContent className="p-5">
                 <img
-                  src="/src/assets/images/cricket-player.png"
+                  src="/images/cricket-player.png"
                   alt="all players"
                   className="w-11/12 mx-auto"
                 />

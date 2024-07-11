@@ -2,7 +2,7 @@
   {
     "id": "0001",
     "name": "Emon Reza",
-    "imageUrl": "/src/assets/images/Emon.png",
+    "imageUrl": "/images/Emon.png",
     "position": "All Rounder",
     "handUsed": "RH",
     "weight": 5
@@ -10,7 +10,7 @@
   {
     "id": "0002",
     "name": "Elias Shekh",
-    "imageUrl": "/src/assets/images/Elias.png",
+    "imageUrl": "/images/Elias.png",
     "position": "All Rounder",
     "handUsed": "RH",
     "weight": 5
@@ -18,7 +18,7 @@
   {
     "id": "0003",
     "name": "Samiul Islam",
-    "imageUrl": "/src/assets/images/Samiul.png",
+    "imageUrl": "/images/Samiul.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5
@@ -26,7 +26,7 @@
   {
     "id": "0004",
     "name": "Muhammad Shahnewaz",
-    "imageUrl": "/src/assets/images/Shanewaz.png",
+    "imageUrl": "/images/Shanewaz.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5
@@ -34,7 +34,7 @@
   {
     "id": "0005",
     "name": "Jeromio Ghagra Calvin",
-    "imageUrl": "/src/assets/images/Calvin.png",
+    "imageUrl": "/images/Calvin.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5
@@ -42,7 +42,7 @@
   {
     "id": "0006",
     "name": "Rakib Hasan",
-    "imageUrl": "/src/assets/images/Rakib.png",
+    "imageUrl": "/images/Rakib.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5
@@ -50,7 +50,7 @@
   {
     "id": "0007",
     "name": "Kazi Rahat",
-    "imageUrl": "/src/assets/images/Rahat.png",
+    "imageUrl": "/images/Rahat.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5
@@ -58,7 +58,7 @@
   {
     "id": "0008",
     "name": "Kamruzzaman",
-    "imageUrl": "/src/assets/images/Kamrujjaman.png",
+    "imageUrl": "/images/Kamrujjaman.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5
@@ -66,7 +66,7 @@
   {
     "id": "0009",
     "name": "Riaz Ahmed",
-    "imageUrl": "/src/assets/images/Riaz.png",
+    "imageUrl": "/images/Riaz.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5
@@ -74,7 +74,7 @@
   {
     "id": "0010",
     "name": "Mezanur Rahman",
-    "imageUrl": "/src/assets/images/Mezanur.png",
+    "imageUrl": "/images/Mezanur.png",
     "position": "Batsman",
     "handUsed": "RH",
     "weight": 5

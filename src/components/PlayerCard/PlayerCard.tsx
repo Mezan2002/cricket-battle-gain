@@ -22,7 +22,7 @@ const PlayerCard = ({ player }: TPlayerProps) => {
               src={
                 isSinglePlayerSelected
                   ? player.imageUrl
-                  : "../../../src/assets/images/cricket-player.png"
+                  : "/images/cricket-player.png"
               }
               alt=""
               className={
