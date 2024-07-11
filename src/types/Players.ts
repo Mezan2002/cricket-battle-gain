@@ -2,7 +2,7 @@ export type TPlayer = {
   id: string;
   imageUrl: string;
   name: string;
-  position: string;
+  role: string;
   handUsed: string;
   weight: number;
 };

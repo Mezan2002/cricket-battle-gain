@@ -26,7 +26,9 @@ const PlayerCard = ({ player }: TPlayerProps) => {
               }
               alt=""
               className={
-                isSinglePlayerSelected ? "w-full h-full" : "w-8/12 mx-auto"
+                isSinglePlayerSelected
+                  ? "w-full h-full rounded-[15px]"
+                  : "w-8/12 mx-auto"
               }
             />
             {isSinglePlayerSelected ? (
@@ -54,7 +56,7 @@ const PlayerCard = ({ player }: TPlayerProps) => {
                 </p>
               </div>
               <p className="card-footer text-xs">
-                {player.position} &nbsp; | &nbsp; weight: {player.weight}
+                {player.role} &nbsp; | &nbsp; weight: {player.weight}
               </p>
             </div>
           </div>

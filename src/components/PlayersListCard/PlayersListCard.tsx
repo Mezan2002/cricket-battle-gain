@@ -27,7 +27,7 @@ const PlayersListCard = ({ player, onRemove }: TPlayerProps) => {
         <div className="flex">
           <p className="text-lg font-bold">{player?.name}</p>
         </div>
-        <p className="p text-sm font-light">Position: {player?.position}</p>
+        <p className="p text-sm font-light">Role: {player?.role}</p>
         <p className="p text-sm font-light">Hand Use: {player?.handUsed}</p>
         <p className="p text-sm font-light">Weight: {player?.weight}</p>
       </div>

@@ -16,8 +16,13 @@ const CreateNewMatch = () => {
   const [stage, setStage] = useState("player_selection");
   const [teamAlpha, setTeamAlpha] = useState<TPlayer[]>([]);
   const [teamBeta, setTeamBeta] = useState<TPlayer[]>([]);
-  const playerList = playersData;
   const [selectedPlayers, setSelectedPlayers] = useState<TPlayer[]>([]);
+
+  const playerList = playersData;
+  const isNoData =
+    selectedPlayers.length === 0 &&
+    teamAlpha.length === 0 &&
+    teamBeta.length === 0;
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
@@ -108,22 +113,14 @@ const CreateNewMatch = () => {
     <section className="text-white">
       <div className="p-10">
         {stage === "creating_new_match" ? (
-          <>
+          <p>
             <div className="mb-5 flex items-center justify-between">
               <h1 className="text-3xl font-semibold">Create a new match</h1>
               <Button
                 className="bg-[#4D8DFF] duration-500 hover:bg-blue-600"
-                onClick={() =>
-                  selectedPlayers.length ||
-                  teamAlpha.length ||
-                  teamBeta.length === 0
-                    ? handleGoBack()
-                    : handleGotoNext()
-                }
+                onClick={() => (isNoData ? handleGoBack() : handleGotoNext())}
               >
-                {selectedPlayers.length === 0 &&
-                teamAlpha.length === 0 &&
-                teamBeta.length === 0 ? (
+                {isNoData ? (
                   <p className="flex items-center">
                     <ArrowLeftCircle className="mr-2" size={20} /> Goto Back
                   </p>
@@ -135,19 +132,23 @@ const CreateNewMatch = () => {
                 )}
               </Button>
             </div>
-            <DragDropContext onDragEnd={onDragEnd}>
-              <div className="grid grid-cols-3 gap-5">
-                <div>
-                  <h6 className="font-bold text-lg mb-4">Player List</h6>
-                  <Droppable droppableId="playerList">
-                    {(provided) => (
-                      <div
-                        className="space-y-5"
-                        {...provided.droppableProps}
-                        ref={provided.innerRef}
-                      >
-                        {selectedPlayers.length > 0 ? (
-                          selectedPlayers.map((player, index) => (
+            {isNoData ? (
+              <p className="flex items-center justify-center h-[60vh]">
+                No Data Founded!
+              </p>
+            ) : (
+              <DragDropContext onDragEnd={onDragEnd}>
+                <div className="grid grid-cols-3 gap-5">
+                  <div>
+                    <h6 className="font-bold text-lg mb-4">Player List</h6>
+                    <Droppable droppableId="playerList">
+                      {(provided) => (
+                        <div
+                          className="space-y-5"
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          {selectedPlayers.map((player, index) => (
                             <Draggable
                               key={player.id}
                               draggableId={player.id.toString()}
@@ -166,84 +167,80 @@ const CreateNewMatch = () => {
                                 </div>
                               )}
                             </Draggable>
-                          ))
-                        ) : (
-                          <p className="text-lg font-medium">
-                            No data avaiable
-                          </p>
-                        )}
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </div>
+                  <Droppable droppableId="teamAlpha">
+                    {(provided) => (
+                      <div
+                        className="space-x-5 space-y-5"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        <h6 className="font-bold text-lg">Team Alpha</h6>
+                        {teamAlpha.map((player, index) => (
+                          <Draggable
+                            key={player.id}
+                            draggableId={player.id.toString()}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <PlayersListCard
+                                  player={player}
+                                  onRemove={handleRemovePlayer}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                  <Droppable droppableId="teamBeta">
+                    {(provided) => (
+                      <div
+                        className="space-x-5 space-y-5"
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                      >
+                        <h6 className="font-bold text-lg">Team Beta</h6>
+                        {teamBeta.map((player, index) => (
+                          <Draggable
+                            key={player.id}
+                            draggableId={player.id.toString()}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                              >
+                                <PlayersListCard
+                                  player={player}
+                                  onRemove={handleRemovePlayer}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
                         {provided.placeholder}
                       </div>
                     )}
                   </Droppable>
                 </div>
-                <Droppable droppableId="teamAlpha">
-                  {(provided) => (
-                    <div
-                      className="space-x-5 space-y-5"
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                    >
-                      <h6 className="font-bold text-lg">Team Alpha</h6>
-                      {teamAlpha.map((player, index) => (
-                        <Draggable
-                          key={player.id}
-                          draggableId={player.id.toString()}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <PlayersListCard
-                                player={player}
-                                onRemove={handleRemovePlayer}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-                <Droppable droppableId="teamBeta">
-                  {(provided) => (
-                    <div
-                      className="space-x-5 space-y-5"
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                    >
-                      <h6 className="font-bold text-lg">Team Beta</h6>
-                      {teamBeta.map((player, index) => (
-                        <Draggable
-                          key={player.id}
-                          draggableId={player.id.toString()}
-                          index={index}
-                        >
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                            >
-                              <PlayersListCard
-                                player={player}
-                                onRemove={handleRemovePlayer}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </div>
-            </DragDropContext>
-          </>
+              </DragDropContext>
+            )}
+          </p>
         ) : (
           <>
             <div className="flex items-center justify-between mb-10">
