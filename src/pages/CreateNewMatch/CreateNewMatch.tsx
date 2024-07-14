@@ -299,38 +299,76 @@ const CreateNewMatch = () => {
               <div>
                 <h6 className="font-bold text-lg mb-4">Team Alpha</h6>
                 <div
-                  className="border h-max min-h-[40rem] relative"
+                  className="border rounded-lg h-max min-h-[40rem] overflow-y-auto relative overflow-hidden"
                   style={{
-                    backgroundImage: "url('/images/BDCricket.png')",
-                    backgroundPosition: "right",
-                    opacity: "1",
+                    backgroundImage: "url('/images/team-wolves.png')",
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
                   }}
                 >
-                  <div className="absolute w-full h-full bg-black opacity-50 z-20" />
-                  <div className="z-30 flex flex-row items-end">
+                  <div className="z-30 flex flex-col justify-end h-full absolute bottom-0">
                     <img
-                      src="/images/captain.png"
+                      src="/images/captain-2.png"
                       alt=""
                       className="w-fit h-fit"
                     />
-                    <p className="text-3xl font-medium absolute bottom-3 left-7 bg-black p-3 rounded-2xl bg-opacity-70">
-                      Mashrafi Bin Mortaza
+                    <p className="text-3xl inline-block font-medium text-left left-7 bg-black p-3 rounded-2xl bg-opacity-70">
+                      Mahamudullah Riyad
                     </p>
                   </div>
-                  {/* {teamAlpha.map((player) => (
-                    <div key={player.id}>
-                      <PlayersListCard player={player} onRemove={() => {}} />
-                    </div>
-                  ))} */}
+                  <div className="absolute right-10 top-20 z-30 grid grid-cols-3 gap-4">
+                    {teamAlpha.map((player) => (
+                      <div
+                        key={player.id}
+                        className="flex flex-col items-center"
+                      >
+                        <img
+                          src={player.imageUrl}
+                          alt=""
+                          className="rounded-full h-36 w-36 object-cover"
+                        />
+                        <p className="text-sm font-bold">{player.name}</p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div>
                 <h6 className="font-bold text-lg mb-4">Team Beta</h6>
-                {teamBeta.map((player) => (
-                  <div key={player.id}>
-                    <PlayersListCard player={player} onRemove={() => {}} />
+                <div
+                  className="border rounded-lg h-max min-h-[40rem] overflow-y-auto relative overflow-hidden"
+                  style={{
+                    backgroundImage: "url('/images/team-panda.png')",
+                    backgroundPosition: "center",
+                    backgroundSize: "cover",
+                  }}
+                >
+                  <div className="z-30 flex flex-col justify-end h-full absolute bottom-0">
+                    <img
+                      src="/images/captain.jpg"
+                      alt=""
+                      className="w-fit h-fit"
+                    />
+                    <p className="text-3xl font-medium left-7 bg-black p-3 rounded-2xl bg-opacity-70 text-center">
+                      Taskin Ahmed
+                    </p>
                   </div>
-                ))}
+                  <div className="absolute right-10 top-20 z-30 grid grid-cols-3 gap-4">
+                    {teamBeta.map((player) => (
+                      <div
+                        key={player.id}
+                        className="flex flex-col items-center"
+                      >
+                        <img
+                          src={player.imageUrl}
+                          alt=""
+                          className="rounded-full h-36 w-36 object-cover"
+                        />
+                        <p className="text-sm font-bold">{player.name}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
             <Button className="mt-5 bg-[#4D8DFF] duration-500 hover:bg-blue-600">

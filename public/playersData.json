@@ -78,5 +78,13 @@
     "role": "Batsman",
     "handUsed": "RH",
     "weight": 5
+  },
+  {
+    "id": "0011",
+    "name": "Tahsin Ahmed",
+    "imageUrl": "/images/tahsin.jpeg",
+    "role": "Batsman",
+    "handUsed": "LH",
+    "weight": 5
   }
 ]
